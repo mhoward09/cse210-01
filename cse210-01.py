@@ -5,24 +5,33 @@
 def main():
     squares = placeHolders()
     end = gameEnd(squares)
-    player1Turn = True
+    player1Turn = False
     while end == "":
+        player1Turn = not player1Turn
         grid(squares)
         playerMove(squares, player1Turn)
         end = gameEnd(squares)
-        player1Turn = not player1Turn
-    print("Game over")
+    if end == "draw":
+        print("it's a draw")
+    elif player1Turn == True:
+        print("Xs win")  
+    else:
+        print("Os win")  
+    print("Good game! Thanks for playing")
+    
     
 #replaces placeholder with player marker
 def playerMove(placeHolder, playerturn):
-    pick = int(input("please choose a square (1-9): "))
-    if pick in placeHolder:
-        move = placeHolder.index(pick)
-        if playerturn == True:
-            placeHolder[move] = "X"
-        else:
-            placeHolder[move] = "O"
-        return placeHolder
+    playerName = "X"
+    if playerturn == False:
+        playerName = "O"
+    pick = input(f"{playerName}'s turn to choose a square (1-9): ")
+    while not (pick.isnumeric() and 1 <= int(pick) <= 9 and int(pick) in placeHolder):
+        pick = input(f"{pick} is not a valid input. Please pick an available square: ")
+    
+    move = placeHolder.index(int(pick))
+    placeHolder[move] = playerName
+    return placeHolder
 
 # initializes array of place holders for the squares that can be chosen
 def placeHolders():
